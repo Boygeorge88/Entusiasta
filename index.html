@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Entusiasta</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #111; color: white; }
+    header { background: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be') center/cover; padding: 80px 20px; text-align: center; color: white; }
+    header h1 { font-size: 2.5em; margin: 0; }
+    nav { display: flex; flex-wrap: wrap; justify-content: center; background: #222; padding: 10px; }
+    nav a { margin: 10px; color: #e60000; text-decoration: none; font-weight: bold; }
+    section { padding: 20px; }
+    h2 { color: #e60000; }
+    .card { background: #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+    input, select, button { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; }
+    button { background: #e60000; color: white; font-weight: bold; cursor: pointer; }
+    #resultado { background: #333; padding: 15px; border-radius: 10px; display: none; }
+    .ai-box { background: #1e1e1e; padding: 10px; border-left: 4px solid #e60000; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Entusiasta</h1>
+  <p>Todo para los apasionados del motor</p>
+</header>
+
+<nav>
+  <a href="#novedades">Novedades</a>
+  <a href="#clasicos">Clásicos</a>
+  <a href="#noticias">Noticias</a>
+  <a href="#videojuegos">Videojuegos</a>
+  <a href="#consejos">Consejos</a>
+  <a href="#piezas">Piezas</a>
+  <a href="#comparador">Comparador</a>
+</nav>
+
+<section id="novedades">
+  <h2>Novedades</h2>
+  <div class="card">Últimos lanzamientos de coches eléctricos deportivos.</div>
+  <div class="card">Nuevas motocicletas naked 2025 en Europa.</div>
+</section>
+
+<section id="clasicos">
+  <h2>Clásicos</h2>
+  <div class="card">BMW E30 restaurado: joya alemana.</div>
+  <div class="card">Ford Mustang '67: potencia americana.</div>
+</section>
+
+<section id="noticias">
+  <h2>Noticias</h2>
+  <div class="card">Ferrari anuncia motor híbrido V12.</div>
+  <div class="card">Ducati prepara su nueva Panigale para MotoGP.</div>
+</section>
+
+<section id="videojuegos">
+  <h2>Videojuegos</h2>
+  <div class="card">Gran Turismo vs Forza: ¿cuál es mejor en 2025?</div>
+  <div class="card">MotoGP 24: simulación realista o arcade?</div>
+</section>
+
+<section id="consejos">
+  <h2>Consejos</h2>
+  <div class="card">Cómo mantener tu coche en perfecto estado.</div>
+  <div class="card">Checklist antes de comprar una moto usada.</div>
+</section>
+
+<section id="piezas">
+  <h2>Piezas y Modificaciones</h2>
+  <div class="card">Top 5 escapes deportivos legales.</div>
+  <div class="card">Cómo mejorar el rendimiento con bajo presupuesto.</div>
+</section>
+
+<section id="comparador">
+  <h2>Comparador de precios</h2>
+  <form id="formulario">
+    <input type="text" id="marca" placeholder="Marca" required />
+    <input type="text" id="modelo" placeholder="Modelo" required />
+    <input type="number" id="anio" placeholder="Año" required />
+    <input type="number" id="km" placeholder="Kilómetros" required />
+    <select id="estado" required>
+      <option value="">Estado</option>
+      <option value="excelente">Excelente</option>
+      <option value="bueno">Bueno</option>
+      <option value="regular">Regular</option>
+    </select>
+    <button type="submit">Comparar</button>
+  </form>
+  <div id="resultado"></div>
+</section>
+
+<section>
+  <h2>Buscador inteligente (IA)</h2>
+  <input type="text" id="busqueda" placeholder="Ej: ¿Cuál es el mejor coche deportivo 2025?" />
+  <div class="ai-box" id="respuestaIA"></div>
+</section>
+
+<script>
+  // Comparador
+  document.getElementById('formulario').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const marca = document.getElementById('marca').value;
+    const modelo = document.getElementById('modelo').value;
+    const anio = parseInt(document.getElementById('anio').value);
+    const km = parseInt(document.getElementById('km').value);
+    const estado = document.getElementById('estado').value;
+
+    let precio = 20000;
+    if (anio < 2015) precio -= 5000;
+    if (anio < 2010) precio -= 3000;
+    if (km > 100000) precio -= 4000;
+    if (estado === 'regular') precio -= 2000;
+    if (estado === 'bueno') precio -= 1000;
+
+    precio = Math.max(precio, 3000);
+    document.getElementById('resultado').style.display = 'block';
+    document.getElementById('resultado').innerHTML = `<strong>${marca} ${modelo}</strong>: valor estimado <strong>${precio.toLocaleString('es-ES')} €</strong>`;
+  });
+
+  // Asistente IA simulado
+  document.getElementById('busqueda').addEventListener('input', function() {
+    const texto = this.value.toLowerCase();
+    let respuesta = "Estoy pensando...";
+
+    if (texto.includes("mejor coche")) {
+      respuesta = "En 2025, el Porsche Taycan Turbo GT es uno de los mejores deportivos eléctricos.";
+    } else if (texto.includes("moto deportiva")) {
+      respuesta = "La Yamaha R1 sigue siendo una de las reinas del segmento por su equilibrio.";
+    } else if (texto.includes("modificar mi coche")) {
+      respuesta = "Empieza por admisión, escape y ECU, siempre respetando la legalidad.";
+    }
+
+    document.getElementById('respuestaIA').textContent = respuesta;
+  });
+</script>
+
+</body>
+</html>
