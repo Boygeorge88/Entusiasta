@@ -3,137 +3,146 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Entusiasta</title>
+  <title>Entusiasta - Mundo Motor</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #111; color: white; }
-    header { background: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be') center/cover; padding: 80px 20px; text-align: center; color: white; }
-    header h1 { font-size: 2.5em; margin: 0; }
-    nav { display: flex; flex-wrap: wrap; justify-content: center; background: #222; padding: 10px; }
-    nav a { margin: 10px; color: #e60000; text-decoration: none; font-weight: bold; }
-    section { padding: 20px; }
-    h2 { color: #e60000; }
-    .card { background: #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-    input, select, button { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; }
-    button { background: #e60000; color: white; font-weight: bold; cursor: pointer; }
-    #resultado { background: #333; padding: 15px; border-radius: 10px; display: none; }
-    .ai-box { background: #1e1e1e; padding: 10px; border-left: 4px solid #e60000; margin-top: 10px; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+    header {
+      background: linear-gradient(to right, #d60000, #000);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.5rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: #d60000;
+      font-weight: bold;
+    }
+    h2 {
+      border-left: 5px solid #d60000;
+      padding-left: 10px;
+    }
+    section {
+      padding: 20px;
+    }
+    .card {
+      background: #f5f5f5;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 10px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+    }
+    .buscador {
+      margin: 1rem 0;
+    }
+    .resultados li {
+      padding: 5px;
+      background: #eee;
+      margin: 3px 0;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Entusiasta</h1>
-  <p>Todo para los apasionados del motor</p>
-</header>
+  <header>
+    <h1>🏁 Entusiasta</h1>
+    <p>Pasión por los coches y motos. Todo en un solo lugar.</p>
+  </header>
 
-<nav>
-  <a href="#novedades">Novedades</a>
-  <a href="#clasicos">Clásicos</a>
-  <a href="#noticias">Noticias</a>
-  <a href="#videojuegos">Videojuegos</a>
-  <a href="#consejos">Consejos</a>
-  <a href="#piezas">Piezas</a>
-  <a href="#comparador">Comparador</a>
-</nav>
+  <nav>
+    <a href="#noticias">Noticias</a>
+    <a href="#comparador">Comparador</a>
+    <a href="#clásicos">Clásicos</a>
+    <a href="#modificaciones">Mods</a>
+    <a href="#videojuegos">Juegos</a>
+    <a href="#piezas">Piezas</a>
+    <a href="#consejos">Consejos</a>
+  </nav>
 
-<section id="novedades">
-  <h2>Novedades</h2>
-  <div class="card">Últimos lanzamientos de coches eléctricos deportivos.</div>
-  <div class="card">Nuevas motocicletas naked 2025 en Europa.</div>
-</section>
+  <!-- 🔎 Buscador -->
+  <section id="buscador">
+    <h2>🔍 Buscar contenido</h2>
+    <input type="text" id="buscar" placeholder="Ej: BMW M3, consejos, mods..." class="buscador">
+    <ul id="resultados" class="resultados"></ul>
+  </section>
 
-<section id="clasicos">
-  <h2>Clásicos</h2>
-  <div class="card">BMW E30 restaurado: joya alemana.</div>
-  <div class="card">Ford Mustang '67: potencia americana.</div>
-</section>
+  <!-- 📰 Noticias -->
+  <section id="noticias">
+    <h2>📰 Actualidad del Motor</h2>
+    <div id="feed-noticias"></div>
+  </section>
 
-<section id="noticias">
-  <h2>Noticias</h2>
-  <div class="card">Ferrari anuncia motor híbrido V12.</div>
-  <div class="card">Ducati prepara su nueva Panigale para MotoGP.</div>
-</section>
+  <!-- 🚗 Comparador -->
+  <section id="comparador">
+    <h2>📊 Compara tu vehículo</h2>
+    <form onsubmit="event.preventDefault(); comparar();">
+      <input type="text" id="marca" placeholder="Marca" required />
+      <input type="text" id="modelo" placeholder="Modelo" required />
+      <input type="number" id="año" placeholder="Año" required />
+      <button type="submit">Comparar</button>
+    </form>
+    <div id="resultado-comparador"></div>
+  </section>
 
-<section id="videojuegos">
-  <h2>Videojuegos</h2>
-  <div class="card">Gran Turismo vs Forza: ¿cuál es mejor en 2025?</div>
-  <div class="card">MotoGP 24: simulación realista o arcade?</div>
-</section>
+  <!-- Otras secciones -->
+  <section id="clásicos"><h2>🏎️ Coches Clásicos</h2><div id="clasicos"></div></section>
+  <section id="modificaciones"><h2>🛠️ Modificaciones</h2><div id="modificaciones-contenido"></div></section>
+  <section id="videojuegos"><h2>🎮 Videojuegos</h2><div id="juegos"></div></section>
+  <section id="piezas"><h2>⚙️ Piezas de Rendimiento</h2><div id="piezas-contenido"></div></section>
+  <section id="consejos"><h2>🧰 Consejos</h2><div id="consejos-contenido"></div></section>
 
-<section id="consejos">
-  <h2>Consejos</h2>
-  <div class="card">Cómo mantener tu coche en perfecto estado.</div>
-  <div class="card">Checklist antes de comprar una moto usada.</div>
-</section>
+  <footer style="text-align:center; padding:1rem; background:#111; color:white;">
+    &copy; 2025 Entusiasta. Hecho con pasión.
+  </footer>
 
-<section id="piezas">
-  <h2>Piezas y Modificaciones</h2>
-  <div class="card">Top 5 escapes deportivos legales.</div>
-  <div class="card">Cómo mejorar el rendimiento con bajo presupuesto.</div>
-</section>
-
-<section id="comparador">
-  <h2>Comparador de precios</h2>
-  <form id="formulario">
-    <input type="text" id="marca" placeholder="Marca" required />
-    <input type="text" id="modelo" placeholder="Modelo" required />
-    <input type="number" id="anio" placeholder="Año" required />
-    <input type="number" id="km" placeholder="Kilómetros" required />
-    <select id="estado" required>
-      <option value="">Estado</option>
-      <option value="excelente">Excelente</option>
-      <option value="bueno">Bueno</option>
-      <option value="regular">Regular</option>
-    </select>
-    <button type="submit">Comparar</button>
-  </form>
-  <div id="resultado"></div>
-</section>
-
-<section>
-  <h2>Buscador inteligente (IA)</h2>
-  <input type="text" id="busqueda" placeholder="Ej: ¿Cuál es el mejor coche deportivo 2025?" />
-  <div class="ai-box" id="respuestaIA"></div>
-</section>
-
-<script>
-  // Comparador
-  document.getElementById('formulario').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const marca = document.getElementById('marca').value;
-    const modelo = document.getElementById('modelo').value;
-    const anio = parseInt(document.getElementById('anio').value);
-    const km = parseInt(document.getElementById('km').value);
-    const estado = document.getElementById('estado').value;
-
-    let precio = 20000;
-    if (anio < 2015) precio -= 5000;
-    if (anio < 2010) precio -= 3000;
-    if (km > 100000) precio -= 4000;
-    if (estado === 'regular') precio -= 2000;
-    if (estado === 'bueno') precio -= 1000;
-
-    precio = Math.max(precio, 3000);
-    document.getElementById('resultado').style.display = 'block';
-    document.getElementById('resultado').innerHTML = `<strong>${marca} ${modelo}</strong>: valor estimado <strong>${precio.toLocaleString('es-ES')} €</strong>`;
-  });
-
-  // Asistente IA simulado
-  document.getElementById('busqueda').addEventListener('input', function() {
-    const texto = this.value.toLowerCase();
-    let respuesta = "Estoy pensando...";
-
-    if (texto.includes("mejor coche")) {
-      respuesta = "En 2025, el Porsche Taycan Turbo GT es uno de los mejores deportivos eléctricos.";
-    } else if (texto.includes("moto deportiva")) {
-      respuesta = "La Yamaha R1 sigue siendo una de las reinas del segmento por su equilibrio.";
-    } else if (texto.includes("modificar mi coche")) {
-      respuesta = "Empieza por admisión, escape y ECU, siempre respetando la legalidad.";
+  <!-- Scripts -->
+  <script>
+    // Noticias automáticas
+    async function cargarNoticias() {
+      const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://feeds.motor1.com/rss/all");
+      const data = await res.json();
+      const contenedor = document.getElementById("feed-noticias");
+      contenedor.innerHTML = data.items.slice(0, 5).map(n => `
+        <div class="card">
+          <h3><a href="${n.link}" target="_blank">${n.title}</a></h3>
+          <p>${n.pubDate.split(" ")[0]}</p>
+          <p>${n.description.slice(0, 150)}...</p>
+        </div>
+      `).join('');
     }
+    cargarNoticias();
 
-    document.getElementById('respuestaIA').textContent = respuesta;
-  });
-</script>
+    // Buscador inteligente
+    const contenidos = ["BMW M3", "Consejos de mantenimiento", "Piezas deportivas", "Gran Turismo 7", "Toyota Supra", "Coche clásico", "Escape modificado"];
+    document.getElementById("buscar").addEventListener("input", e => {
+      const val = e.target.value.toLowerCase();
+      document.getElementById("resultados").innerHTML = contenidos
+        .filter(item => item.toLowerCase().includes(val))
+        .map(match => `<li>${match}</li>`)
+        .join('');
+    });
 
+    // Comparador simple (modo demo)
+    function comparar() {
+      const marca = document.getElementById("marca").value;
+      const modelo = document.getElementById("modelo").value;
+      const año = document.getElementById("año").value;
+      document.getElementById("resultado-comparador").innerHTML = `
+        <div class="card">🔍 Buscando precio para ${marca} ${modelo} (${año})...<br/>[DEMO] Valor estimado: ${15000 - (2025 - año) * 700} €</div>
+      `;
+    }
+  </script>
 </body>
 </html>
