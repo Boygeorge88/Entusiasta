@@ -8,49 +8,90 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fff;
-      color: #111;
+      background: #f2f2f2;
     }
+
     header {
-      background: linear-gradient(to right, #d60000, #000);
-      color: white;
+      background: #000;
+      color: #fff;
       padding: 1rem;
       text-align: center;
     }
+
     nav {
       background: #fff;
       display: flex;
       justify-content: center;
-      gap: 1rem;
       flex-wrap: wrap;
-      padding: 0.5rem;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
     nav a {
       text-decoration: none;
       color: #d60000;
+      margin: 0 15px;
       font-weight: bold;
     }
-    h2 {
-      border-left: 5px solid #d60000;
-      padding-left: 10px;
+
+    .hero {
+      background-image: url('https://cdn.motor1.com/images/mgl/nzqJr/s3/cars-front.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 4px #000;
+      font-size: 2rem;
     }
+
     section {
       padding: 20px;
+      max-width: 1200px;
+      margin: auto;
     }
+
+    h2 {
+      color: #d60000;
+      margin-bottom: 10px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 20px;
+    }
+
     .card {
-      background: #f5f5f5;
-      padding: 1rem;
-      margin: 1rem 0;
+      background: white;
       border-radius: 10px;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
     }
-    .buscador {
-      margin: 1rem 0;
+
+    .card:hover {
+      transform: scale(1.02);
     }
-    .resultados li {
-      padding: 5px;
-      background: #eee;
-      margin: 3px 0;
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    footer {
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
     }
   </style>
 </head>
@@ -58,91 +99,53 @@
 
   <header>
     <h1>🏁 Entusiasta</h1>
-    <p>Pasión por los coches y motos. Todo en un solo lugar.</p>
+    <p>Pasión por el mundo del motor</p>
   </header>
 
   <nav>
     <a href="#noticias">Noticias</a>
     <a href="#comparador">Comparador</a>
-    <a href="#clásicos">Clásicos</a>
-    <a href="#modificaciones">Mods</a>
-    <a href="#videojuegos">Juegos</a>
+    <a href="#clasicos">Clásicos</a>
+    <a href="#mods">Mods</a>
+    <a href="#juegos">Juegos</a>
     <a href="#piezas">Piezas</a>
     <a href="#consejos">Consejos</a>
   </nav>
 
-  <!-- 🔎 Buscador -->
-  <section id="buscador">
-    <h2>🔍 Buscar contenido</h2>
-    <input type="text" id="buscar" placeholder="Ej: BMW M3, consejos, mods..." class="buscador">
-    <ul id="resultados" class="resultados"></ul>
-  </section>
+  <div class="hero">
+    <div>Lo mejor del mundo automotor</div>
+  </div>
 
-  <!-- 📰 Noticias -->
+  <!-- 📰 Noticias visuales -->
   <section id="noticias">
-    <h2>📰 Actualidad del Motor</h2>
-    <div id="feed-noticias"></div>
+    <h2>📰 Últimas noticias</h2>
+    <div class="cards" id="news-feed"></div>
   </section>
 
-  <!-- 🚗 Comparador -->
-  <section id="comparador">
-    <h2>📊 Compara tu vehículo</h2>
-    <form onsubmit="event.preventDefault(); comparar();">
-      <input type="text" id="marca" placeholder="Marca" required />
-      <input type="text" id="modelo" placeholder="Modelo" required />
-      <input type="number" id="año" placeholder="Año" required />
-      <button type="submit">Comparar</button>
-    </form>
-    <div id="resultado-comparador"></div>
-  </section>
-
-  <!-- Otras secciones -->
-  <section id="clásicos"><h2>🏎️ Coches Clásicos</h2><div id="clasicos"></div></section>
-  <section id="modificaciones"><h2>🛠️ Modificaciones</h2><div id="modificaciones-contenido"></div></section>
-  <section id="videojuegos"><h2>🎮 Videojuegos</h2><div id="juegos"></div></section>
-  <section id="piezas"><h2>⚙️ Piezas de Rendimiento</h2><div id="piezas-contenido"></div></section>
-  <section id="consejos"><h2>🧰 Consejos</h2><div id="consejos-contenido"></div></section>
-
-  <footer style="text-align:center; padding:1rem; background:#111; color:white;">
-    &copy; 2025 Entusiasta. Hecho con pasión.
+  <footer>
+    &copy; 2025 Entusiasta - Todos los derechos reservados.
   </footer>
 
-  <!-- Scripts -->
   <script>
-    // Noticias automáticas
+    // Noticias visuales
     async function cargarNoticias() {
       const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://feeds.motor1.com/rss/all");
       const data = await res.json();
-      const contenedor = document.getElementById("feed-noticias");
-      contenedor.innerHTML = data.items.slice(0, 5).map(n => `
+      const contenedor = document.getElementById("news-feed");
+
+      contenedor.innerHTML = data.items.slice(0, 6).map(n => `
         <div class="card">
-          <h3><a href="${n.link}" target="_blank">${n.title}</a></h3>
-          <p>${n.pubDate.split(" ")[0]}</p>
-          <p>${n.description.slice(0, 150)}...</p>
+          <img src="${n.enclosure.link}" alt="${n.title}">
+          <div class="card-content">
+            <h3><a href="${n.link}" target="_blank">${n.title}</a></h3>
+            <p>${n.description.slice(0, 100)}...</p>
+          </div>
         </div>
       `).join('');
     }
+
     cargarNoticias();
-
-    // Buscador inteligente
-    const contenidos = ["BMW M3", "Consejos de mantenimiento", "Piezas deportivas", "Gran Turismo 7", "Toyota Supra", "Coche clásico", "Escape modificado"];
-    document.getElementById("buscar").addEventListener("input", e => {
-      const val = e.target.value.toLowerCase();
-      document.getElementById("resultados").innerHTML = contenidos
-        .filter(item => item.toLowerCase().includes(val))
-        .map(match => `<li>${match}</li>`)
-        .join('');
-    });
-
-    // Comparador simple (modo demo)
-    function comparar() {
-      const marca = document.getElementById("marca").value;
-      const modelo = document.getElementById("modelo").value;
-      const año = document.getElementById("año").value;
-      document.getElementById("resultado-comparador").innerHTML = `
-        <div class="card">🔍 Buscando precio para ${marca} ${modelo} (${año})...<br/>[DEMO] Valor estimado: ${15000 - (2025 - año) * 700} €</div>
-      `;
-    }
   </script>
+
 </body>
 </html>
