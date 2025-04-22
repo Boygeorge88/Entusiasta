@@ -1,168 +1,58 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Entusiasta - Mundo Motor</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #fff;
-      color: #111;
-    }
-    header {
-      background: linear-gradient(to right, #d50000, #000);
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    nav {
-      background: #111;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      padding: 8px 16px;
-    }
-    nav a:hover {
-      background: #d50000;
-      border-radius: 4px;
-    }
-    section {
-      padding: 20px;
-    }
-    .news-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .news-item {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .news-item img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .news-item h3 {
-      padding: 10px;
-      font-size: 16px;
-    }
-    .form-container, .chat-container {
-      max-width: 600px;
-      margin: auto;
-      margin-top: 40px;
-    }
-    input, textarea, button {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>Entusiasta</h1>
-    <p>Todo sobre coches, motos, clásicos, mods y más</p>
+    <nav>
+      <ul>
+        <li><a href="#noticias">Noticias</a></li>
+        <li><a href="#comparador">Comparador</a></li>
+        <li><a href="#clasicos">Clásicos</a></li>
+        <li><a href="#modificaciones">Modificaciones</a></li>
+        <li><a href="#asistente">Asistente IA</a></li>
+      </ul>
+    </nav>
   </header>
-  <nav>
-    <a href="#noticias">Noticias</a>
-    <a href="#comparador">Comparador</a>
-    <a href="#clasicos">Clásicos</a>
-    <a href="#mods">Modificaciones</a>
-    <a href="#ia">Asistente IA</a>
-  </nav>
-  <section id="noticias">
-    <h2>Últimas Noticias del Mundo Motor</h2>
-    <div class="news-container" id="news"></div>
-  </section>
-  <section id="comparador">
-    <h2>Compara tu coche con el mercado</h2>
-    <div class="form-container">
-      <input type="text" id="marca" placeholder="Marca" />
-      <input type="text" id="modelo" placeholder="Modelo" />
-      <input type="number" id="anio" placeholder="Año" />
-      <button onclick="compararCoche()">Comparar</button>
-      <p id="resultado"></p>
-    </div>
-  </section>
-  <section id="ia">
-    <h2>Asistente de IA</h2>
-    <div class="chat-container">
-      <textarea id="userPrompt" placeholder="Hazle una pregunta al asistente..."></textarea>
-      <button onclick="consultarIA()">Enviar</button>
-      <p id="respuestaIA"></p>
-    </div>
-  </section>
 
-  <script>
-    // Noticias desde NewsAPI
-    fetch('https://newsapi.org/v2/everything?q=car OR motorcycle OR auto&language=es&pageSize=6&apiKey=535ed17c2a21497680e5a621e23318bb')
-      .then(res => res.json())
-      .then(data => {
-        const newsEl = document.getElementById("news");
-        data.articles.forEach(article => {
-          const item = document.createElement("div");
-          item.className = "news-item";
-          item.innerHTML = `
-            <img src="${article.urlToImage || ''}" alt="noticia">
-            <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
-          `;
-          newsEl.appendChild(item);
-        });
-      });
+  <main>
+    <section id="noticias">
+      <h2>Noticias del Mundo Motor</h2>
+      <div id="news-container">Cargando noticias...</div>
+    </section>
 
-    // Comparador (base simple)
-    const dbVehiculos = [
-      { marca: "Toyota", modelo: "Corolla", anio: 2015, precio: 9500 },
-      { marca: "Honda", modelo: "Civic", anio: 2018, precio: 12000 },
-      { marca: "BMW", modelo: "320", anio: 2016, precio: 15500 }
-    ];
+    <section id="comparador">
+      <h2>Compara tu Vehículo</h2>
+      <form id="compare-form">
+        <input type="text" placeholder="Marca" id="marca" required />
+        <input type="text" placeholder="Modelo" id="modelo" required />
+        <input type="number" placeholder="Año" id="año" required />
+        <button type="submit">Comparar</button>
+      </form>
+      <div id="resultado-comparador"></div>
+    </section>
 
-    function compararCoche() {
-      const marca = document.getElementById("marca").value.toLowerCase();
-      const modelo = document.getElementById("modelo").value.toLowerCase();
-      const anio = parseInt(document.getElementById("anio").value);
-      const resultado = document.getElementById("resultado");
+    <section id="clasicos"><h2>Sección Clásicos</h2></section>
+    <section id="modificaciones"><h2>Sección Modificaciones</h2></section>
 
-      const match = dbVehiculos.find(v =>
-        v.marca.toLowerCase() === marca &&
-        v.modelo.toLowerCase() === modelo &&
-        v.anio === anio
-      );
+    <section id="asistente">
+      <h2>Asistente IA</h2>
+      <textarea id="ia-input" placeholder="Pregúntale algo..."></textarea>
+      <button onclick="enviarPregunta()">Enviar</button>
+      <div id="ia-response"></div>
+    </section>
+  </main>
 
-      resultado.innerText = match
-        ? `El precio estimado de tu vehículo es: €${match.precio}`
-        : "No se encontró el vehículo en la base de datos";
-    }
+  <footer>
+    <p>&copy; 2025 Entusiasta - Todos los derechos reservados</p>
+  </footer>
 
-    // Chat IA (HuggingChat proxy básico)
-    async function consultarIA() {
-      const prompt = document.getElementById("userPrompt").value;
-      const respuesta = document.getElementById("respuestaIA");
-      respuesta.innerText = "Consultando...";
-      try {
-        const res = await fetch("https://huggingface.co/chat/conversation", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ inputs: { text: prompt } })
-        });
-        const data = await res.json();
-        respuesta.innerText = data.generated_text || "No se obtuvo respuesta.";
-      } catch (e) {
-        respuesta.innerText = "Error consultando la IA.";
-      }
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
