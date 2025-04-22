@@ -2,150 +2,167 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Entusiasta - Mundo Motor</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f2f2f2;
+      background: #fff;
+      color: #111;
     }
-
     header {
-      background: #000;
-      color: #fff;
-      padding: 1rem;
+      background: linear-gradient(to right, #d50000, #000);
+      color: white;
+      padding: 20px;
       text-align: center;
     }
-
     nav {
-      background: #fff;
+      background: #111;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      justify-content: space-around;
       padding: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
     nav a {
-      text-decoration: none;
-      color: #d60000;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-
-    .hero {
-      background-image: url('https://cdn.motor1.com/images/mgl/nzqJr/s3/cars-front.jpg');
-      background-size: cover;
-      background-position: center;
-      height: 250px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: white;
-      text-shadow: 2px 2px 4px #000;
-      font-size: 2rem;
+      text-decoration: none;
+      padding: 8px 16px;
     }
-
+    nav a:hover {
+      background: #d50000;
+      border-radius: 4px;
+    }
     section {
       padding: 20px;
-      max-width: 1200px;
-      margin: auto;
     }
-
-    h2 {
-      color: #d60000;
-      margin-bottom: 10px;
-    }
-
-    .cards {
+    .news-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
     }
-
-    .card {
-      background: white;
-      border-radius: 10px;
+    .news-item {
+      border: 1px solid #ddd;
+      border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
     }
-
-    .card:hover {
-      transform: scale(1.02);
-    }
-
-    .card img {
+    .news-item img {
       width: 100%;
-      height: 160px;
+      height: 150px;
       object-fit: cover;
     }
-
-    .card-content {
-      padding: 15px;
+    .news-item h3 {
+      padding: 10px;
+      font-size: 16px;
     }
-
-    footer {
-      background: #000;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
+    .form-container, .chat-container {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 40px;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>🏁 Entusiasta</h1>
-    <p>Pasión por el mundo del motor</p>
+    <h1>Entusiasta</h1>
+    <p>Todo sobre coches, motos, clásicos, mods y más</p>
   </header>
-
   <nav>
     <a href="#noticias">Noticias</a>
     <a href="#comparador">Comparador</a>
     <a href="#clasicos">Clásicos</a>
-    <a href="#mods">Mods</a>
-    <a href="#juegos">Juegos</a>
-    <a href="#piezas">Piezas</a>
-    <a href="#consejos">Consejos</a>
+    <a href="#mods">Modificaciones</a>
+    <a href="#ia">Asistente IA</a>
   </nav>
-
-  <div class="hero">
-    <div>Lo mejor del mundo automotor</div>
-  </div>
-
-  <!-- 📰 Noticias visuales -->
   <section id="noticias">
-    <h2>📰 Últimas noticias</h2>
-    <div class="cards" id="news-feed"></div>
+    <h2>Últimas Noticias del Mundo Motor</h2>
+    <div class="news-container" id="news"></div>
+  </section>
+  <section id="comparador">
+    <h2>Compara tu coche con el mercado</h2>
+    <div class="form-container">
+      <input type="text" id="marca" placeholder="Marca" />
+      <input type="text" id="modelo" placeholder="Modelo" />
+      <input type="number" id="anio" placeholder="Año" />
+      <button onclick="compararCoche()">Comparar</button>
+      <p id="resultado"></p>
+    </div>
+  </section>
+  <section id="ia">
+    <h2>Asistente de IA</h2>
+    <div class="chat-container">
+      <textarea id="userPrompt" placeholder="Hazle una pregunta al asistente..."></textarea>
+      <button onclick="consultarIA()">Enviar</button>
+      <p id="respuestaIA"></p>
+    </div>
   </section>
 
-  <footer>
-    &copy; 2025 Entusiasta - Todos los derechos reservados.
-  </footer>
-
   <script>
-    // Noticias visuales
-    async function cargarNoticias() {
-      const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://feeds.motor1.com/rss/all");
-      const data = await res.json();
-      const contenedor = document.getElementById("news-feed");
+    // Noticias desde NewsAPI
+    fetch('https://newsapi.org/v2/everything?q=car OR motorcycle OR auto&language=es&pageSize=6&apiKey=535ed17c2a21497680e5a621e23318bb')
+      .then(res => res.json())
+      .then(data => {
+        const newsEl = document.getElementById("news");
+        data.articles.forEach(article => {
+          const item = document.createElement("div");
+          item.className = "news-item";
+          item.innerHTML = `
+            <img src="${article.urlToImage || ''}" alt="noticia">
+            <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+          `;
+          newsEl.appendChild(item);
+        });
+      });
 
-      contenedor.innerHTML = data.items.slice(0, 6).map(n => `
-        <div class="card">
-          <img src="${n.enclosure.link}" alt="${n.title}">
-          <div class="card-content">
-            <h3><a href="${n.link}" target="_blank">${n.title}</a></h3>
-            <p>${n.description.slice(0, 100)}...</p>
-          </div>
-        </div>
-      `).join('');
+    // Comparador (base simple)
+    const dbVehiculos = [
+      { marca: "Toyota", modelo: "Corolla", anio: 2015, precio: 9500 },
+      { marca: "Honda", modelo: "Civic", anio: 2018, precio: 12000 },
+      { marca: "BMW", modelo: "320", anio: 2016, precio: 15500 }
+    ];
+
+    function compararCoche() {
+      const marca = document.getElementById("marca").value.toLowerCase();
+      const modelo = document.getElementById("modelo").value.toLowerCase();
+      const anio = parseInt(document.getElementById("anio").value);
+      const resultado = document.getElementById("resultado");
+
+      const match = dbVehiculos.find(v =>
+        v.marca.toLowerCase() === marca &&
+        v.modelo.toLowerCase() === modelo &&
+        v.anio === anio
+      );
+
+      resultado.innerText = match
+        ? `El precio estimado de tu vehículo es: €${match.precio}`
+        : "No se encontró el vehículo en la base de datos";
     }
 
-    cargarNoticias();
+    // Chat IA (HuggingChat proxy básico)
+    async function consultarIA() {
+      const prompt = document.getElementById("userPrompt").value;
+      const respuesta = document.getElementById("respuestaIA");
+      respuesta.innerText = "Consultando...";
+      try {
+        const res = await fetch("https://huggingface.co/chat/conversation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ inputs: { text: prompt } })
+        });
+        const data = await res.json();
+        respuesta.innerText = data.generated_text || "No se obtuvo respuesta.";
+      } catch (e) {
+        respuesta.innerText = "Error consultando la IA.";
+      }
+    }
   </script>
-
 </body>
 </html>
